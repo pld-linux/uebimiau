@@ -9,6 +9,7 @@ Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar.gz
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
+# Source0-size:	196571
 Patch0:		%{name}-attachment,readmsg.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
