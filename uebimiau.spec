@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	5.1.%{sub_ver}
+Release:	5.2.%{sub_ver}
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
@@ -38,9 +38,10 @@ wymaga bazy danych ani IMAP.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{%{name},httpd}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{%{name},httpd},%{_sharedstatedir}/%{name}}
 install -d $RPM_BUILD_ROOT%{_uebimiaudir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes,themes/default}
 
+%{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 ln -sf %{_sysconfdir}/%{name}/config.php		$RPM_BUILD_ROOT%{_uebimiaudir}/inc/config.php
 ln -sf %{_sysconfdir}/%{name}/config.languages.php	$RPM_BUILD_ROOT%{_uebimiaudir}/inc/config.languages.php
@@ -89,13 +90,12 @@ if [ "$1" = "0" ]; then
 fi
 
 %triggerin -- %{name} < 2.7.8-5.RC1
-set -x
-echo "Moving your precious uebimiau configs contents to new location (/etc/%{name}/)."
+echo "Moving your precious uebimiau configs contents to new location (%{_sysconfdir}/%{name}/) ..."
 CONFFILES="/home/*/httpd/html/uebimiau/inc/config*.php*"
 for CONFFILE in $CONFFILES ; do
 	cat "$CONFFILE" > %{_sysconfdir}/%{name}/$(basename "$CONFFILE")
-echo "Done."
 done || :
+echo "Done."
 
 %files
 %defattr(644,root,root,755)
@@ -105,11 +105,11 @@ done || :
 %attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/httpd/%{name}.conf
 %dir %{_uebimiaudir}
 %{_uebimiaudir}/*.php
+%{_uebimiaudir}/database
 %{_uebimiaudir}/extra
 %{_uebimiaudir}/images
 %{_uebimiaudir}/inc
 %{_uebimiaudir}/langs
 %{_uebimiaudir}/smarty
 %{_uebimiaudir}/themes
-# FIX IT
-%attr(775,http,http) %{_uebimiaudir}/database
+%dir %attr(775,http,http) %{_sharedstatedir}/%{name}
