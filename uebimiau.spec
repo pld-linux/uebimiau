@@ -1,5 +1,5 @@
-Summary:	UebiMiau - Simple POP3 Mail Reader
-Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
+Summary:	UebiMiau - simple POP3 mail reader
+Summary(pl):	UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
@@ -11,13 +11,13 @@ Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
 Patch0:		%{name}-bugfixes.patch
 Patch1:		%{name}-folders.patch
-Patch2:     	%{name}-smarty.patch
-Patch3:     	%{name}-pl-fixes.patch
+Patch2:		%{name}-smarty.patch
+Patch3:		%{name}-pl-fixes.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
-Requires:   Smarty
+Requires:	Smarty
 Requires:	sed >= 4.1.1
 Requires:	webserver
 Provides:	webmail
@@ -25,18 +25,18 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-UebiMiau is a web-based e-mail client written in PHP. It's have some
+UebiMiau is a web-based e-mail client written in PHP. It has some
 features, such as: Folders, View and Send Attachments, Preferences,
 Search, Quota Limit, etc. UebiMiau does not require database or IMAP.
 
 %description -l pl
 UebiMiau jest napisanym w PHP klientem poczty elektronicznej. Jego
-mo¿liwo¶ci, to m.in. obs³uga folderów, przegl±dania i wysy³ania
+mo¿liwo¶ci to m.in. obs³uga folderów, przegl±dania i wysy³ania
 za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
 %define		_appdir		%{_datadir}/%{name}
-%define     	_smartydir  %{php_pear_dir}/Smarty
+%define		_smartydir	%{php_pear_dir}/Smarty
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
@@ -53,7 +53,7 @@ install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,themes/def
 
 %{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 for f in index.php inc/inc.php; do
-  %{__sed} -i "s|define(\"SMARTY_DIR\",\"./smarty/\");|define(\"SMARTY_DIR\",\"%{_smartydir}/\");|" $f
+	%{__sed} -i "s|define(\"SMARTY_DIR\",\"./smarty/\");|define(\"SMARTY_DIR\",\"%{_smartydir}/\");|" $f
 done
 mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 ln -sf %{_sysconfdir}/%{name}/config.php		$RPM_BUILD_ROOT%{_appdir}/inc/config.php
@@ -137,7 +137,7 @@ if [ -d "$RADIR" -o -d "$ACDIR" ] ; then
 		echo -e	"\n###############################################################################\n"
 		echo	"Done."
 		echo -e	"\n###############################################################################\n"
-		echo 	"Now you *must* move by hand %{name} data (see \$temprorary_directory"
+		echo	"Now you *must* move by hand %{name} data (see \$temprorary_directory"
 		echo	"in ${CDIR}/config.php.rpmsave where they are)\nto /var/lib/%{name}/ . "
 		echo -e	"\n###############################################################################\n"
 	fi
