@@ -43,10 +43,10 @@ Group:		Applications/Mail
 Requires:	%{name} = %{version}-%{release}
 
 %description theme-mozilla
-A mozilla-like theme for UebiMiau
+A mozilla-like theme for UebiMiau.
 
 %description theme-mozilla -l pl
-Skórka dla UebiMiau przypominaj±ca nieco mozillê
+Skórka dla UebiMiau przypominaj±ca nieco mozillê.
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
