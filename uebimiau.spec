@@ -3,13 +3,12 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	5.3.%{sub_ver}
+Release:	6.%{sub_ver}
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar.gz
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
-#Source1:	%{name}-theme-mozilla.tar.gz
 Patch0:		%{name}-attachment,readmsg.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
@@ -34,31 +33,17 @@ mo¿liwo¶ci, to m.in. obs³uga folderów, przegl±dania i wysy³ania
 za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
-#%%package theme-mozilla
-#Summary:	Theme for UebiMiau
-#Summary(pl):	Skórka dla UebiMiau
-#Group:		Applications/Mail
-#Requires:	%{name} = %{version}-%{release}
-
-#%%description theme-mozilla
-#A mozilla-like theme for UebiMiau.
-#
-#%%description theme-mozilla -l pl
-#Skórka dla UebiMiau przypominaj±ca nieco mozillê.
-
 %define         _appdir     %{_datadir}/%{name}
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
 %patch0 -p1
-#%%cp %{SOURCE1} .
-#tar zxf uebimiau-theme-mozilla.tar.gz
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{%{name},httpd},%{_sharedstatedir}/%{name}}
-install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes,themes/default,themes/mozilla}
+install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes/default}
 
 %{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
@@ -78,8 +63,7 @@ install smarty/plugins/*	$RPM_BUILD_ROOT%{_appdir}/smarty/plugins
 install smarty/templates/*	$RPM_BUILD_ROOT%{_appdir}/smarty/templates
 install themes/debug.tpl	$RPM_BUILD_ROOT%{_appdir}/themes
 install themes/default/*	$RPM_BUILD_ROOT%{_appdir}/themes/default
-#install mozilla/* 		$RPM_BUILD_ROOT%{_appdir}/themes/mozilla
-echo    Alias "/%{name}" "%{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
+echo "Alias /%{name} %{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -148,7 +132,7 @@ if [ -d "$RADIR" -o -d "$ACDIR" ] ; then
 		echo -e	"\n###############################################################################\n"
 		echo	"Done."
 		echo -e	"\n###############################################################################\n"
-		echo 	"Now you *must* move by hand %{name}s data (see \$temprorary_directory"
+		echo 	"Now you *must* move by hand %{name} data (see \$temprorary_directory"
 		echo	"in ${CDIR}/config.php.rpmsave where they are)\nto /var/lib/%{name}/ . "
 		echo -e	"\n###############################################################################\n"
 	fi
@@ -171,8 +155,5 @@ fi
 %dir %{_appdir}/themes
 %{_appdir}/themes/debug.tpl
 %{_appdir}/themes/default
-%dir %attr(775,http,http) %{_sharedstatedir}/%{name}
-
-#%%files theme-mozilla
-#%%defattr(644,root,root,755)
-#%%{_appdir}/themes/mozilla
+%defattr(640,http,http,750)
+%dir %{_sharedstatedir}/%{name}
