@@ -94,6 +94,7 @@ echo "Moving your precious uebimiau configs contents to new location (/etc/%{nam
 CONFFILES="/home/*/httpd/html/uebimiau/inc/config*.php*"
 for CONFFILE in $CONFFILES ; do
 	cat "$CONFFILE" > %{_sysconfdir}/%{name}/$(basename "$CONFFILE")
+echo "Done."
 done || :
 
 %files
