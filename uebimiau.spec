@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	8.%{sub_ver}.3
+Release:	9.%{sub_ver}.1
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
@@ -11,9 +11,8 @@ Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
 Patch0:		%{name}-bugfixes.patch
 Patch1:		%{name}-folders.patch
-Patch2:     %{name}-smarty.patch
-Patch3:     %{name}-pl-fixes.patch
-Patch4:     %{name}-attachments.patch
+Patch2:     	%{name}-smarty.patch
+Patch3:     	%{name}-pl-fixes.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
@@ -37,7 +36,7 @@ za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
 %define		_appdir		%{_datadir}/%{name}
-%define     _smartydir  %{php_pear_dir}/Smarty
+%define     	_smartydir  %{php_pear_dir}/Smarty
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
@@ -45,7 +44,6 @@ wymaga bazy danych ani IMAP.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
