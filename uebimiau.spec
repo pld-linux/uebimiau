@@ -14,7 +14,7 @@ Provides:	webmail
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define         _uebimiaudir     /home/httpd/html/uebimiau
+%define         _uebimiaudir     /home/services/httpd/html/uebimiau
 
 %description
 UebiMiau is a web-based e-mail client written in PHP. It's have some
