@@ -1,4 +1,3 @@
-%include	/usr/lib/rpm/macros.php
 Summary:	UebiMiau - Simple POP3 Mail Reader
 Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
@@ -10,6 +9,7 @@ Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.sili.com.br/downloads/%{name}-%{version}-latest.zip
 URL:		http://www.uebimiau.sili.com.br
 Requires:	webserver
+Requires:	php
 Provides:	webmail
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
