@@ -1,3 +1,4 @@
+%include	/usr/lib/rpm/macros.php
 Summary:	UebiMiau - Simple POP3 Mail Reader
 Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
@@ -9,7 +10,6 @@ Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.sili.com.br/downloads/%{name}-%{version}-latest.zip
 URL:		http://www.uebimiau.sili.com.br
 Requires:	webserver
-Requires:	php
 Provides:	webmail
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -17,19 +17,18 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define         _uebimiaudir     /home/httpd/html/uebimiau
 
 %description
-UebiMiau is a web-based e-mail client written in PHP.
-It's have some features, such as: Folders, View and Send 
-Attachments, Preferences, Search, Quota Limit, etc.
-UebiMiau does not require database or IMAP.
+UebiMiau is a web-based e-mail client written in PHP. It's have some
+features, such as: Folders, View and Send Attachments, Preferences,
+Search, Quota Limit, etc. UebiMiau does not require database or IMAP.
 
 %description -l pl
-UebiMaiu jest napisanym w PHP klientem poczty elektornicznej.
-Jego mo¿liwo¶ci, to m.in obs³uga folderów, przegl±dania i wysy³ania
-za³±czników, preferencji, wyszkiwania, quoty i inne. 
-UebiMiau nie wymaga bazy danych lub IMAP.
+UebiMaiu jest napisanym w PHP klientem poczty elektornicznej. Jego
+mo¿liwo¶ci, to m.in obs³uga folderów, przegl±dania i wysy³ania
+za³±czników, preferencji, wyszkiwania, quoty i inne. UebiMiau nie
+wymaga bazy danych lub IMAP.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -46,10 +45,6 @@ install themes/debug.tpl $RPM_BUILD_ROOT%{_uebimiaudir}/themes
 install themes/default/* $RPM_BUILD_ROOT%{_uebimiaudir}/themes/default
 install themes/neotech.net/* $RPM_BUILD_ROOT%{_uebimiaudir}/themes/neotech.net
 
-%post
-echo "Konfiguracja znajduje siê w pliku %{_uebimiaudir}/inc/config.php."
-echo "Configuration is in %{_uebimiaudir}/inc/config.php file."
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -58,6 +53,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc CHANGELOG.txt INSTALL.txt README.txt
 %attr(775,root,http) %{_uebimiaudir}/database
 %attr(755,root,root) %config(noreplace) %verify(not size md5 mtime) %{_uebimiaudir}/inc/config.php
+%dir %{_uebimiaudir}
 %{_uebimiaudir}/*.php
 %{_uebimiaudir}/extra
 %{_uebimiaudir}/images
