@@ -5,7 +5,7 @@ Version:	2.7
 Release:	1
 License:	GPL
 Group:		Applications/Mail
-Vendor:		Aldoir <aldoir@users.sourceforge.net>
+Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.sili.com.br/downloads/%{name}-%{version}-latest.zip
 URL:		http://www.uebimiau.sili.com.br
 Requires:	webserver
