@@ -46,7 +46,7 @@ Requires:	%{name} = %{version}-%{release}
 A mozilla-like theme for UebiMiau
 
 %description theme-mozilla -l pl
-Skórka dla UebiMiau przypominaj±co nieco mozille
+Skórka dla UebiMiau przypominaj±ca nieco mozillê
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
