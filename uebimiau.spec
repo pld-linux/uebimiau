@@ -9,7 +9,7 @@ Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar.gz
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
-Source1:	%{name}-theme-mozilla.tar.gz
+#Source1:	%{name}-theme-mozilla.tar.gz
 Patch0:		%{name}-attachment,readmsg.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
@@ -34,25 +34,25 @@ mo¿liwo¶ci, to m.in. obs³uga folderów, przegl±dania i wysy³ania
 za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
-%package theme-mozilla
-Summary:	Theme for UebiMiau
-Summary(pl):	Skórka dla UebiMiau
-Group:		Applications/Mail
-Requires:	%{name} = %{version}-%{release}
+#%%package theme-mozilla
+#Summary:	Theme for UebiMiau
+#Summary(pl):	Skórka dla UebiMiau
+#Group:		Applications/Mail
+#Requires:	%{name} = %{version}-%{release}
 
-%description theme-mozilla
-A mozilla-like theme for UebiMiau.
-
-%description theme-mozilla -l pl
-Skórka dla UebiMiau przypominaj±ca nieco mozillê.
+#%%description theme-mozilla
+#A mozilla-like theme for UebiMiau.
+#
+#%%description theme-mozilla -l pl
+#Skórka dla UebiMiau przypominaj±ca nieco mozillê.
 
 %define         _appdir     %{_datadir}/%{name}
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
 %patch0 -p1
-cp %{SOURCE1} .
-tar zxf uebimiau-theme-mozilla.tar.gz
+#%%cp %{SOURCE1} .
+#tar zxf uebimiau-theme-mozilla.tar.gz
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -78,7 +78,7 @@ install smarty/plugins/*	$RPM_BUILD_ROOT%{_appdir}/smarty/plugins
 install smarty/templates/*	$RPM_BUILD_ROOT%{_appdir}/smarty/templates
 install themes/debug.tpl	$RPM_BUILD_ROOT%{_appdir}/themes
 install themes/default/*	$RPM_BUILD_ROOT%{_appdir}/themes/default
-install mozilla/* 		$RPM_BUILD_ROOT%{_appdir}/themes/mozilla
+#install mozilla/* 		$RPM_BUILD_ROOT%{_appdir}/themes/mozilla
 echo    Alias "/%{name}" "%{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
 
 %clean
@@ -173,6 +173,6 @@ fi
 %{_appdir}/themes/default
 %dir %attr(775,http,http) %{_sharedstatedir}/%{name}
 
-%files theme-mozilla
-%defattr(644,root,root,755)
-%{_appdir}/themes/mozilla
+#%%files theme-mozilla
+#%%defattr(644,root,root,755)
+#%%{_appdir}/themes/mozilla
