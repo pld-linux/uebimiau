@@ -1,0 +1,146 @@
+diff -urN a/langs/pl.txt b/langs/pl.txt
+--- a/langs/pl.txt	2002-06-20 19:07:28.000000000 +0200
++++ b/langs/pl.txt	2005-01-04 10:16:29.025920360 +0100
+@@ -14,13 +14,13 @@
+ 
+ # Mail Server Errors
+ 
+-error_connect					= Nie mogê po³±czyæ siê z serwerem
+-error_retrieving				= Nie mogê odczytaæ wiadomo¶ci
++error_connect					= Nie uda³o siê po³±czyæ siê z serwerem
++error_retrieving				= Nie uda³o siê odczytaæ wiadomo¶ci
+ error_other					= B³±d - proszê skontaktowaæ siê z administratorem
+ 
+ #Invalid name of mailbox
+ 
+-error_invalid_name				= Z³a nazwa - u¿ywaj tylko takich znaków: A-Z, 0-9, .-
++error_invalid_name				= Niepoprawna nazwa - proszê u¿ywaæ tylko takich znaków: A-Z, 0-9, .-
+ 
+ 
+ #Validations when sending mails            ;
+@@ -28,13 +28,13 @@
+ error_no_recipients				= Musisz podaæ odbiorcê poczty
+ error_compose_invalid_mail1_s	= Podany adres e-mail jest nieprawid³owy!
+ error_compose_invalid_mail1_p	= Podane adresy e-mail s± nieprawid³owe!
+-error_compose_invalid_mail2_s	= Zanim wyslesz wiadomodc,\rupewnij sie czy wszelkie dane sa prawidlowe. 
+-error_compose_invalid_mail2_p	= Zanim wyslesz wiadomo¶ci, \rupewnij sie czy wszelkie dane sa prawidlowe.
++error_compose_invalid_mail2_s	= Zanim wy¶lesz wiadomo¶æ,\rupewnij siê, czy wszystkie dane s± prawid³owe. 
++error_compose_invalid_mail2_p	= Zanim wy¶lesz wiadomo¶ci, \rupewnij siê, czy wszystkie dane s± prawid³owe.
+ 
+ 
+ #Confirmation of delete                    ;
+ 
+-confirm_delete					= Czy jeste¶ pewien ¿e chcesz skasowaæ t± wiadomo¶æ?
++confirm_delete					= Czy na pewno skasowaæ t± wiadomo¶æ?
+ 
+ 
+ # If the message no have a subject or sender;
+@@ -46,7 +46,7 @@
+ 
+ # If the quota limit was exceeded           ;
+ 
+-quota_exceeded					= Twój limit dyskowy zosta³ przekroczony.\rProszê skasuj stare wiadomo¶ci i spróbuj ponownie
++quota_exceeded					= Twój limit dyskowy zosta³ przekroczony.\rProszê usun±æ stare wiadomo¶ci i spróbowaæ ponownie
+ quota_usage_info				= Limit dyskowy
+ quota_usage_used				= Zajête
+ quota_usage_of					= z
+@@ -67,7 +67,7 @@
+ default_char_set				= iso-8859-2
+ 
+ messages_mnu					= Wiadomo¶ci
+-compose_mnu					= Komponuj
++compose_mnu					= Napisz
+ refresh_mnu					= Od¶wie¿
+ folders_mnu					= Foldery
+ search_mnu					= Szukaj
+@@ -78,7 +78,7 @@
+ 
+ 
+ 
+-reply_prefix					= Odp:
++reply_prefix					= Re:
+ forward_prefix					= Fw:
+ 
+ reply_delimiter					= --------- Wiadomo¶æ oryginalna --------
+@@ -95,7 +95,7 @@
+ [Headers]
+ 
+ key_hea							= Typ
+-value_hea						= Waro¶æ
++value_hea						= Warto¶æ
+ 
+ [Folders]
+ 
+@@ -104,7 +104,7 @@
+ fld_size_hea					= Rozmiar
+ fld_empty_hea					= Opró¿nij
+ fld_delete_hea					= Usuñ
+-fld_total					= Wszystkie:
++fld_total					= £±cznie:
+ fld_make_new					= Utwórz nowy folder
+ folders_to					= Foldery dla
+ 
+@@ -135,13 +135,13 @@
+ 
+ 
+ lgn_title					= Logowanie
+-lgn_welcome_msg					= Informacje Logowania
++lgn_welcome_msg					= Proszê siê zalogowaæ 
+ lng_user_email					= E-mail
+ lng_user_name					= Login
+ lng_user_pwd					= Has³o
+ lng_theme					= Wygl±d
+ lng_language					= Jêzyk
+-lng_login_btn					= Zaloguj &gt;&gt;
++lng_login_btn					= Zaloguj &raquo;
+ 
+ 
+ [Newmessage]
+@@ -158,7 +158,7 @@
+ attch_size					= Rozmiar
+ attch_type_hea					= Typ
+ attch_dele_hea					= Usuñ
+-attch_no_hea					= Nie ma za³±czników
++attch_no_hea					= Brak za³±czników
+ 
+ add_signature					= Dodaj sygnaturê
+ send_text					= Wy¶lij
+@@ -207,7 +207,7 @@
+ color_white					= Bia³y
+ 
+ view_source					= Poka¿ kod HTML
+-text_mode					= Text mode
++text_mode					= Tryb tekstowy 
+ clear_format					= Usuñ format
+ 
+ priority_text					= Priorytet
+@@ -217,7 +217,7 @@
+ 
+ [BadLogin]
+ 
+-bdl_title					= B³±d logowania 
++bdl_title					= Nieudane logowanie 
+ bdl_msg						= Podana nazwa u¿ytkownika lub has³o jest nieprawid³owe<br><br>Proszê spróbowaæ ponownie
+ bdl_back					= Powrót
+ 
+@@ -252,7 +252,8 @@
+ prf_default_editor_mode				= Domy¶lny tryb edycji
+ prf_default_editor_mode_text			= "Tryb tekstowy"
+ prf_default_editor_mode_html			= "Edytor HTML (Tylko dla przegl±darek IE5 lub nowszych)"
+-prf_time_to_refesh				= Czêstotliwo¶æ od¶wierzania wiadomo¶ci (w minutach)
++prf_time_to_refesh				= Czêstotliwo¶æ od¶wie¿ania wiadomo¶ci (w minutach)
++
+ 
+ [Catch]
+ 
+@@ -292,8 +293,8 @@
+ 
+ [Search]
+ 
+-sch_information_text				= Podaj frazê lub s³owo, którego szukasz.<br> Przeszukiwane bêd± wy³±cznie przeczytane wiadomo¶ci. 
+-sch_button_text					= Szukaj &gt;&gt;
++sch_information_text				= Podaj frazê lub s³owo, którego szukaæ.<br> Przeszukiwane bêd± wy³±cznie przeczytane wiadomo¶ci. 
++sch_button_text					= Szukaj &raquo;
+ sch_subject_hea					= Temat
+ sch_from_hea					= Od
+ sch_date_hea					= Data
