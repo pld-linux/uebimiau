@@ -2,7 +2,7 @@ Summary:	UebiMiau - Simple POP3 Mail Reader
 Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.2
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
@@ -22,7 +22,7 @@ features, such as: Folders, View and Send Attachments, Preferences,
 Search, Quota Limit, etc. UebiMiau does not require database or IMAP.
 
 %description -l pl
-UebiMaiu jest napisanym w PHP klientem poczty elektronicznej. Jego
+UebiMiau jest napisanym w PHP klientem poczty elektronicznej. Jego
 mo¿liwo¶ci, to m.in. obs³uga folderów, przegl±dania i wysy³ania
 za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
@@ -53,7 +53,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc CHANGELOG.txt INSTALL.txt README.txt
 %attr(775,root,http) %{_uebimiaudir}/database
 %attr(755,root,root) %config(noreplace) %verify(not size md5 mtime) %{_uebimiaudir}/inc/config.php
-%attr(755,root,root) %config(noreplace) %verify(not size md5 mtime) %{_uebimiaudir}/inc/config.languages.php
+%attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_uebimiaudir}/inc/config.languages.php
 %dir %{_uebimiaudir}
 %{_uebimiaudir}/*.php
 %{_uebimiaudir}/extra
