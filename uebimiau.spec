@@ -6,9 +6,9 @@ Release:	2
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
-Source0:	http://www.uebimiau.sili.com.br/downloads/%{name}-%{version}-any.tar.gz
-# Source0-md5:	1a9ca75b873bec75fc541e285fb4831c
-URL:		http://www.uebimiau.sili.com.br/
+Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-any.tar.gz
+# Source0-md5:	c0af9f46db46feb46c9d38d8fcd90868
+URL:		http://www.uebimiau.org/
 Requires:	php
 Requires:	webserver
 Provides:	webmail
