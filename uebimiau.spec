@@ -34,7 +34,7 @@ mo¿liwo¶ci, to m.in. obs³uga folderów, przegl±dania i wysy³ania
 za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
-%define         _appdir     %{_datadir}/%{name}
+%define		_appdir		%{_datadir}/%{name}
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
@@ -83,13 +83,13 @@ fi
 if [ "$1" = "0" ]; then
 	umask 027
 	if [ -d %{_sysconfdir}/httpd/httpd.conf ]; then
-	    rm -f %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
+		rm -f %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 	else
 		grep -v "^Include.*%{name}.conf" %{_sysconfdir}/httpd/httpd.conf > \
 			%{_sysconfdir}/httpd/httpd.conf.tmp
 		mv -f %{_sysconfdir}/httpd/httpd.conf.tmp %{_sysconfdir}/httpd/httpd.conf
 		if [ -f /var/lock/subsys/httpd ]; then
-		    %{_sbindir}/apachectl restart 1>&2
+			%{_sbindir}/apachectl restart 1>&2
 		fi
 	fi
 fi
