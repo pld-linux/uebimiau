@@ -3,12 +3,13 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	1.%{sub_ver}
+Release:	2.%{sub_ver}
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar.gz
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
+Patch0:		uebimiau-attachment,readmsg.patch 		
 URL:		http://www.uebimiau.org/
 Requires:	php
 Requires:	webserver
@@ -32,6 +33,7 @@ wymaga bazy danych ani IMAP.
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
+%patch0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
