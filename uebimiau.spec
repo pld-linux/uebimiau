@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	8.%{sub_ver}.2
+Release:	8.%{sub_ver}.3
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
@@ -12,12 +12,12 @@ Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar
 Patch0:		%{name}-bugfixes.patch
 Patch1:		%{name}-folders.patch
 Patch2:     %{name}-smarty.patch
+Patch3:     %{name}-pl-fixes.patch
+Patch4:     %{name}-attachments.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
-Requires:	php
-Requires:	php-pcre
 Requires:   Smarty
 Requires:	sed >= 4.1.1
 Requires:	webserver
@@ -44,6 +44,8 @@ wymaga bazy danych ani IMAP.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -53,7 +55,7 @@ install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,themes/def
 
 %{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 for f in index.php inc/inc.php; do
-%{__sed} -i "s|define(\"SMARTY_DIR\",\"./smarty/\");|define(\"SMARTY_DIR\",\"%{_smartydir}/\");|" $f
+  %{__sed} -i "s|define(\"SMARTY_DIR\",\"./smarty/\");|define(\"SMARTY_DIR\",\"%{_smartydir}/\");|" $f
 done
 mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 ln -sf %{_sysconfdir}/%{name}/config.php		$RPM_BUILD_ROOT%{_appdir}/inc/config.php
