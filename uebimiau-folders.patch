@@ -1,0 +1,16 @@
+diff -ur uebimiau-2.7.8-RC1-any/folders.php uebimiau-2.7.8-RC1-any_/folders.php
+--- uebimiau-2.7.8-RC1-any/folders.php	2003-06-28 23:03:06.000000000 +0200
++++ uebimiau-2.7.8-RC1-any_/folders.php	2004-11-15 18:07:33.125961256 +0100
+@@ -171,7 +171,11 @@
+ unset($SS,$UM);
+ array_qsort2 ($system,"name");
+ 
+-$umFolderList = array_merge($system, $personal);
++if (isset($personal)) {
++    $umFolderList = array_merge($system, $personal);
++    } else {
++    $umFolderList = array_merge($system);
++    }
+ 
+ 
+ 
