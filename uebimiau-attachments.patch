@@ -1,0 +1,10 @@
+diff -urN a/download.php b/download.php
+--- a/download.php	2005-01-04 10:33:06.000000000 +0100
++++ b/download.php	2005-01-04 10:34:01.193966504 +0100
+@@ -43,5 +43,5 @@
+ Header("Content-Length: $size\r\n");
+ Header("Content-Disposition: $disposition; filename=\"".$attach["name"]."\"\r\n");
+ 
+-redirect($attach["filename"]);
++echo $stream;
+ ?>
