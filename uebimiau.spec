@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	5.2.%{sub_ver}
+Release:	5.3.%{sub_ver}
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
@@ -22,8 +22,6 @@ Requires:	webserver
 Provides:	webmail
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define         _uebimiaudir     %{_datadir}/%{name}
 
 %description
 UebiMiau is a web-based e-mail client written in PHP. It's have some
@@ -48,6 +46,8 @@ A mozilla-like theme for UebiMiau.
 %description theme-mozilla -l pl
 Skórka dla UebiMiau przypominaj±ca nieco mozillê.
 
+%define         _appdir     %{_datadir}/%{name}
+
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
 %patch0 -p1
@@ -58,28 +58,28 @@ tar zxf uebimiau-theme-mozilla.tar.gz
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{%{name},httpd},%{_sharedstatedir}/%{name}}
-install -d $RPM_BUILD_ROOT%{_uebimiaudir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes,themes/default,themes/mozilla}
+install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes,themes/default,themes/mozilla}
 
 %{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-ln -sf %{_sysconfdir}/%{name}/config.php		$RPM_BUILD_ROOT%{_uebimiaudir}/inc/config.php
-ln -sf %{_sysconfdir}/%{name}/config.languages.php	$RPM_BUILD_ROOT%{_uebimiaudir}/inc/config.languages.php
-ln -sf %{_sysconfdir}/%{name}/config.security.php	$RPM_BUILD_ROOT%{_uebimiaudir}/inc/config.security.php
+ln -sf %{_sysconfdir}/%{name}/config.php		$RPM_BUILD_ROOT%{_appdir}/inc/config.php
+ln -sf %{_sysconfdir}/%{name}/config.languages.php	$RPM_BUILD_ROOT%{_appdir}/inc/config.languages.php
+ln -sf %{_sysconfdir}/%{name}/config.security.php	$RPM_BUILD_ROOT%{_appdir}/inc/config.security.php
 
-install *.php			$RPM_BUILD_ROOT%{_uebimiaudir}
-install database/index.php	$RPM_BUILD_ROOT%{_uebimiaudir}/database
-install extra/*			$RPM_BUILD_ROOT%{_uebimiaudir}/extra
-install images/*		$RPM_BUILD_ROOT%{_uebimiaudir}/images
-install inc/*			$RPM_BUILD_ROOT%{_uebimiaudir}/inc
-install langs/*			$RPM_BUILD_ROOT%{_uebimiaudir}/langs
-install smarty/*.php		$RPM_BUILD_ROOT%{_uebimiaudir}/smarty
-install smarty/*.tpl		$RPM_BUILD_ROOT%{_uebimiaudir}/smarty
-install smarty/plugins/*	$RPM_BUILD_ROOT%{_uebimiaudir}/smarty/plugins
-install smarty/templates/*	$RPM_BUILD_ROOT%{_uebimiaudir}/smarty/templates
-install themes/debug.tpl	$RPM_BUILD_ROOT%{_uebimiaudir}/themes
-install themes/default/*	$RPM_BUILD_ROOT%{_uebimiaudir}/themes/default
-install mozilla/* 		$RPM_BUILD_ROOT%{_uebimiaudir}/themes/mozilla
-echo    Alias "/%{name}" "%{_uebimiaudir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
+install *.php			$RPM_BUILD_ROOT%{_appdir}
+install database/index.php	$RPM_BUILD_ROOT%{_appdir}/database
+install extra/*			$RPM_BUILD_ROOT%{_appdir}/extra
+install images/*		$RPM_BUILD_ROOT%{_appdir}/images
+install inc/*			$RPM_BUILD_ROOT%{_appdir}/inc
+install langs/*			$RPM_BUILD_ROOT%{_appdir}/langs
+install smarty/*.php		$RPM_BUILD_ROOT%{_appdir}/smarty
+install smarty/*.tpl		$RPM_BUILD_ROOT%{_appdir}/smarty
+install smarty/plugins/*	$RPM_BUILD_ROOT%{_appdir}/smarty/plugins
+install smarty/templates/*	$RPM_BUILD_ROOT%{_appdir}/smarty/templates
+install themes/debug.tpl	$RPM_BUILD_ROOT%{_appdir}/themes
+install themes/default/*	$RPM_BUILD_ROOT%{_appdir}/themes/default
+install mozilla/* 		$RPM_BUILD_ROOT%{_appdir}/themes/mozilla
+echo    Alias "/%{name}" "%{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -109,7 +109,7 @@ if [ "$1" = "0" ]; then
 	fi
 fi
 
-%triggerin -- %{name} < 2.7.8-5.RC1
+%triggerun -- %{name} < 2.7.8-5.RC1
 RADIR=/home/httpd/html/uebimiau/inc
 ACDIR=/home/services/httpd/html/uebimiau/inc
 if [ -d "$RADIR" -o -d "$ACDIR" ] ; then
@@ -160,17 +160,19 @@ fi
 %dir %{_sysconfdir}/%{name}
 %attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/%{name}/*
 %attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/httpd/%{name}.conf
-%dir %{_uebimiaudir}
-%{_uebimiaudir}/*.php
-%{_uebimiaudir}/database
-%{_uebimiaudir}/extra
-%{_uebimiaudir}/images
-%{_uebimiaudir}/inc
-%{_uebimiaudir}/langs
-%{_uebimiaudir}/smarty
-%{_uebimiaudir}/themes
+%dir %{_appdir}
+%{_appdir}/*.php
+%{_appdir}/database
+%{_appdir}/extra
+%{_appdir}/images
+%{_appdir}/inc
+%{_appdir}/langs
+%{_appdir}/smarty
+%dir %{_appdir}/themes
+%{_appdir}/themes/debug.tpl
+%{_appdir}/themes/default
 %dir %attr(775,http,http) %{_sharedstatedir}/%{name}
 
 %files theme-mozilla
 %defattr(644,root,root,755)
-%{_uebimiaudir}/themes/mozilla
+%{_appdir}/themes/mozilla
