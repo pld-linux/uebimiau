@@ -22,3 +22,28 @@ diff -urN a/index.php b/index.php
  $smarty->assign("umLanguageFile",$selected_language.".txt");
  
  $smarty->assign("umEmail",$f_email);
+ 
+diff -urN a/badlogin.php b/badlogin.php
+--- a/badlogin.php	2003-06-28 23:00:24.000000000 +0200
++++ b/badlogin.php	2005-01-07 16:31:24.996219232 +0100
+@@ -21,6 +21,8 @@
+ 
+ $smarty = new Smarty;
+ $smarty->compile_dir = $temporary_directory;
++$smarty->template_dir = 'themes';
++$smarty->config_dir = 'langs';
+ $smarty->security=true;
+ $smarty->secure_dir=array("./");
+ 
+diff -urN a/error.php b/error.php
+--- a/error.php	2003-01-06 22:38:58.000000000 +0100
++++ b/error.php	2005-01-07 16:31:00.990868600 +0100
+@@ -19,6 +19,8 @@
+ require_once(SMARTY_DIR."Smarty.class.php");
+ $smarty = new Smarty;
+ $smarty->compile_dir = $temporary_directory;
++$smarty->template_dir = 'themes';
++$smarty->config_dir = 'langs';
+ $smarty->security=true;
+ $smarty->secure_dir=array("./");
+ $smarty->assign("umLanguageFile",$selected_language.".txt");
