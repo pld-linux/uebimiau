@@ -1,0 +1,6 @@
+- fix location of "Done." message.
+- user & cache data were moved from /usr/share/uebimiau/database
+  to /var/lib/uebimiau; set $temprorary_directory to proper
+  /var/lib/uebimiau (it relates only to new instalation, not upgrade).
+- use macros instead of "hardcoded" paths everywhere where possible.
+- rel. 5.2
