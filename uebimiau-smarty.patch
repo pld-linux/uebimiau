@@ -1,0 +1,24 @@
+diff -urN a/inc/inc.php b/inc/inc.php
+--- a/inc/inc.php	2005-01-04 01:51:30.000000000 +0100
++++ b/inc/inc.php	2005-01-04 01:54:58.812328136 +0100
+@@ -22,6 +22,8 @@
+ require_once(SMARTY_DIR."Smarty.class.php");
+ $smarty = new Smarty;
+ $smarty->compile_dir = $temporary_directory;
++$smarty->template_dir = 'themes';
++$smarty->config_dir = 'langs';
+ $smarty->security=true;
+ $smarty->secure_dir=array("./");
+ 
+diff -urN a/index.php b/index.php
+--- a/index.php	2003-01-06 23:20:38.000000000 +0100
++++ b/index.php	2005-01-04 01:53:45.508472016 +0100
+@@ -19,6 +19,8 @@
+ $smarty->security=true;
+ $smarty->secure_dir=array("./");
+ $smarty->compile_dir = $temporary_directory;
++$smarty->template_dir = 'themes';
++$smarty->config_dir = 'langs';
+ $smarty->assign("umLanguageFile",$selected_language.".txt");
+ 
+ $smarty->assign("umEmail",$f_email);
