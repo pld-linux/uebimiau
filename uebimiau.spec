@@ -1,13 +1,14 @@
 Summary:	UebiMiau - Simple POP3 Mail Reader
 Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
-Version:	2.7.2
-Release:	2
+Version:	2.7.8
+%define		sub_ver	RC1
+Release:	1.%{sub_ver}
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
-Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-any.tar.gz
-# Source0-md5:	c0af9f46db46feb46c9d38d8fcd90868
+Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar.gz
+# Source0-md5:	20e355ef9535deb49b8866cd93b661af
 URL:		http://www.uebimiau.org/
 Requires:	php
 Requires:	webserver
@@ -16,6 +17,7 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _uebimiaudir     /home/services/httpd/html/uebimiau
+#define         _uebimiaudir     /home/httpd/html/mail
 
 %description
 UebiMiau is a web-based e-mail client written in PHP. It's have some
@@ -29,11 +31,11 @@ za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{sub_ver}-any
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_uebimiaudir}/{database,extra,images,inc,langs,smarty,themes,themes/default,themes/neotech.net}
+install -d $RPM_BUILD_ROOT%{_uebimiaudir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes,themes/default}
 
 install *.php $RPM_BUILD_ROOT%{_uebimiaudir}
 install database/index.php $RPM_BUILD_ROOT%{_uebimiaudir}/database
@@ -41,10 +43,12 @@ install extra/* $RPM_BUILD_ROOT%{_uebimiaudir}/extra
 install images/* $RPM_BUILD_ROOT%{_uebimiaudir}/images
 install inc/* $RPM_BUILD_ROOT%{_uebimiaudir}/inc
 install langs/* $RPM_BUILD_ROOT%{_uebimiaudir}/langs
-install smarty/* $RPM_BUILD_ROOT%{_uebimiaudir}/smarty
+install smarty/*.php $RPM_BUILD_ROOT%{_uebimiaudir}/smarty
+install smarty/*.tpl $RPM_BUILD_ROOT%{_uebimiaudir}/smarty
+install smarty/plugins/* $RPM_BUILD_ROOT%{_uebimiaudir}/smarty/plugins
+install smarty/templates/* $RPM_BUILD_ROOT%{_uebimiaudir}/smarty/templates
 install themes/debug.tpl $RPM_BUILD_ROOT%{_uebimiaudir}/themes
 install themes/default/* $RPM_BUILD_ROOT%{_uebimiaudir}/themes/default
-install themes/neotech.net/* $RPM_BUILD_ROOT%{_uebimiaudir}/themes/neotech.net
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -55,6 +59,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(775,root,http) %{_uebimiaudir}/database
 %attr(755,root,root) %config(noreplace) %verify(not size md5 mtime) %{_uebimiaudir}/inc/config.php
 %attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_uebimiaudir}/inc/config.languages.php
+%attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_uebimiaudir}/inc/config.security.php
 %dir %{_uebimiaudir}
 %{_uebimiaudir}/*.php
 %{_uebimiaudir}/extra
