@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	2.%{sub_ver}
+Release:	3.%{sub_ver}
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
@@ -12,13 +12,14 @@ Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar
 Patch0:		uebimiau-attachment,readmsg.patch 		
 URL:		http://www.uebimiau.org/
 Requires:	php
+Requires:	php-pcre
 Requires:	webserver
 Provides:	webmail
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define         _uebimiaudir     /home/services/httpd/html/uebimiau
-#define         _uebimiaudir     /home/httpd/html/mail
+# define         _uebimiaudir     /home/httpd/html/uebimiau
 
 %description
 UebiMiau is a web-based e-mail client written in PHP. It's have some
