@@ -147,8 +147,8 @@ fi
 %defattr(644,root,root,755)
 %doc CHANGELOG.txt INSTALL.txt README.txt
 %dir %{_sysconfdir}/%{name}
-%attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/%{name}/*
-%attr(644,root,root) %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/httpd/%{name}.conf
+%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*
+%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd/%{name}.conf
 %dir %{_appdir}
 %{_appdir}/*.php
 %{_appdir}/database
