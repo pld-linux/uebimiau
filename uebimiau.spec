@@ -52,7 +52,7 @@ Skórka dla UebiMiau przypominaj±co nieco mozille
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
 %patch0 -p1
 cp %{SOURCE1} .
-tar zxvf uebimiau-theme-mozilla.tar.gz
+tar zxf uebimiau-theme-mozilla.tar.gz
 
 %install
 rm -rf $RPM_BUILD_ROOT
