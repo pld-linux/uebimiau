@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - Prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		sub_ver	RC1
-Release:	8.%{sub_ver}.1
+Release:	8.%{sub_ver}.2
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
@@ -11,12 +11,14 @@ Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
 Patch0:		%{name}-bugfixes.patch
 Patch1:		%{name}-folders.patch
+Patch2:     %{name}-smarty.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
 Requires:	php
 Requires:	php-pcre
+Requires:   Smarty
 Requires:	sed >= 4.1.1
 Requires:	webserver
 Provides:	webmail
@@ -35,19 +37,24 @@ za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
 %define		_appdir		%{_datadir}/%{name}
+%define     _smartydir  %{php_pear_dir}/Smarty
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{%{name},httpd},%{_sharedstatedir}/%{name}}
-install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes/default}
+install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,themes/default}
 
 %{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
+for f in index.php inc/inc.php; do
+%{__sed} -i "s|define(\"SMARTY_DIR\",\"./smarty/\");|define(\"SMARTY_DIR\",\"%{_smartydir}/\");|" $f
+done
 mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 ln -sf %{_sysconfdir}/%{name}/config.php		$RPM_BUILD_ROOT%{_appdir}/inc/config.php
 ln -sf %{_sysconfdir}/%{name}/config.languages.php	$RPM_BUILD_ROOT%{_appdir}/inc/config.languages.php
@@ -59,10 +66,6 @@ install extra/*			$RPM_BUILD_ROOT%{_appdir}/extra
 install images/*		$RPM_BUILD_ROOT%{_appdir}/images
 install inc/*			$RPM_BUILD_ROOT%{_appdir}/inc
 install langs/*			$RPM_BUILD_ROOT%{_appdir}/langs
-install smarty/*.php		$RPM_BUILD_ROOT%{_appdir}/smarty
-install smarty/*.tpl		$RPM_BUILD_ROOT%{_appdir}/smarty
-install smarty/plugins/*	$RPM_BUILD_ROOT%{_appdir}/smarty/plugins
-install smarty/templates/*	$RPM_BUILD_ROOT%{_appdir}/smarty/templates
 install themes/debug.tpl	$RPM_BUILD_ROOT%{_appdir}/themes
 install themes/default/*	$RPM_BUILD_ROOT%{_appdir}/themes/default
 echo "Alias /%{name} %{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
@@ -153,7 +156,6 @@ fi
 %{_appdir}/images
 %{_appdir}/inc
 %{_appdir}/langs
-%{_appdir}/smarty
 %dir %{_appdir}/themes
 %{_appdir}/themes/debug.tpl
 %{_appdir}/themes/default
