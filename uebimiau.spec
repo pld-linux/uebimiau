@@ -9,7 +9,8 @@ Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar.gz
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
-Patch0:		uebimiau-attachment,readmsg.patch 		
+Source1:	%{name}-theme-mozilla.tar.gz
+Patch0:		%{name}-attachment,readmsg.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
@@ -17,7 +18,7 @@ BuildRequires:	rpm >= 4.3
 Requires:	php
 Requires:	php-pcre
 Requires:	sed >= 4.1.1
-Requires:	webserver	
+Requires:	webserver
 Provides:	webmail
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -35,15 +36,29 @@ mo¿liwo¶ci, to m.in. obs³uga folderów, przegl±dania i wysy³ania
 za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
+%package theme-mozilla
+Summary:	Theme for UebiMiau
+Summary(pl):	Skórka dla UebiMiau
+Group:		Applications/Mail
+Requires:	%{name} = %{version}-%{release}
+
+%description theme-mozilla
+A mozilla-like theme for UebiMiau
+
+%description theme-mozilla -l pl
+Skórka dla UebiMiau przypominaj±co nieco mozille
+
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
 %patch0 -p1
+cp %{SOURCE1} .
+tar zxvf uebimiau-theme-mozilla.tar.gz
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{%{name},httpd},%{_sharedstatedir}/%{name}}
-install -d $RPM_BUILD_ROOT%{_uebimiaudir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes,themes/default}
+install -d $RPM_BUILD_ROOT%{_uebimiaudir}/{database,extra,images,inc,langs,smarty,smarty/plugins,smarty/templates,themes,themes/default,themes/mozilla}
 
 %{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
@@ -63,6 +78,7 @@ install smarty/plugins/*	$RPM_BUILD_ROOT%{_uebimiaudir}/smarty/plugins
 install smarty/templates/*	$RPM_BUILD_ROOT%{_uebimiaudir}/smarty/templates
 install themes/debug.tpl	$RPM_BUILD_ROOT%{_uebimiaudir}/themes
 install themes/default/*	$RPM_BUILD_ROOT%{_uebimiaudir}/themes/default
+install mozilla/* 		$RPM_BUILD_ROOT%{_uebimiaudir}/themes/mozilla
 echo    Alias "/%{name}" "%{_uebimiaudir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
 
 %clean
@@ -99,7 +115,7 @@ ACDIR=/home/services/httpd/html/uebimiau/inc
 if [ -d "$RADIR" -o -d "$ACDIR" ] ; then
 	echo -e	"\n###############################################################################\n"
 	echo	"Moving %{name} contents of configuration files to new location in"
-	echo	"(%{_sysconfdir}/%{name}/) ..." 
+	echo	"(%{_sysconfdir}/%{name}/) ..."
 	echo	"If something fails run sudo rpm -e --allmatches uebimiau and move configuration"
 	echo	"files and contents of \$temprorary_directory by hand."
 	if [ -d "${RADIR}" -a -d "${ACDIR}" ] ; then
@@ -154,3 +170,7 @@ fi
 %{_uebimiaudir}/smarty
 %{_uebimiaudir}/themes
 %dir %attr(775,http,http) %{_sharedstatedir}/%{name}
+
+%files theme-mozilla
+%defattr(644,root,root,755)
+%{_uebimiaudir}/themes/mozilla
