@@ -11,8 +11,12 @@ Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
 Patch0:		uebimiau-attachment,readmsg.patch 		
 URL:		http://www.uebimiau.org/
+BuildRequires:	sed >= 4.1.1
+# BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
+BuildRequires:	rpm >= 4.3
 Requires:	php
 Requires:	php-pcre
+Requires:	sed >= 4.1.1
 Requires:	webserver	
 Provides:	webmail
 BuildArch:	noarch
@@ -90,12 +94,49 @@ if [ "$1" = "0" ]; then
 fi
 
 %triggerin -- %{name} < 2.7.8-5.RC1
-echo "Moving your precious uebimiau configs contents to new location (%{_sysconfdir}/%{name}/) ..."
-CONFFILES="/home/*/httpd/html/uebimiau/inc/config*.php*"
-for CONFFILE in $CONFFILES ; do
-	cat "$CONFFILE" > %{_sysconfdir}/%{name}/$(basename "$CONFFILE")
-done || :
-echo "Done."
+RADIR=/home/httpd/html/uebimiau/inc
+ACDIR=/home/services/httpd/html/uebimiau/inc
+if [ -d "$RADIR" -o -d "$ACDIR" ] ; then
+	echo -e	"\n###############################################################################\n"
+	echo	"Moving %{name} contents of configuration files to new location in"
+	echo	"(%{_sysconfdir}/%{name}/) ..." 
+	echo	"If something fails run sudo rpm -e --allmatches uebimiau and move configuration"
+	echo	"files and contents of \$temprorary_directory by hand."
+	if [ -d "${RADIR}" -a -d "${ACDIR}" ] ; then
+		echo	"ERROR: Moving fails - system contains both directories:"
+		echo	"$RADIR"
+		echo	"$ACDIR"
+		echo	"Remove by hand this one which does not contain proper configuration files and data."
+		echo	"And try again."
+		echo -e	"\n###############################################################################\n"
+		exit 1
+	fi
+	if [ -d "$RADIR" ] ; then
+		CDIR="$RADIR"
+	elif [ -d "$ACDIR" ] ; then
+		CDIR="$ACDIR"
+	else
+		echo "ERROR: Script failed - hgw."
+		exit 1
+	fi
+	if [ -d "${CDIR}" ] ; then
+		umask 022
+		CFS=$(find "${CDIR}" -name "config*.php")
+		for CF in $CFS ; do
+			cat "$CF" > %{_sysconfdir}/%{name}/$(basename "$CF")
+		done
+		%{__sed} -i \
+			"s|\$temporary_directory = \".*\"|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" \
+			%{_sysconfdir}/%{name}/config.php
+		chmod 644 %{_sysconfdir}/%{name}/*
+		echo -e	"\n###############################################################################\n"
+		echo	"Done."
+		echo -e	"\n###############################################################################\n"
+		echo 	"Now you *must* move by hand %{name}s data (see \$temprorary_directory"
+		echo	"in ${CDIR}/config.php.rpmsave where they are)\nto /var/lib/%{name}/ . "
+		echo -e	"\n###############################################################################\n"
+	fi
+fi
 
 %files
 %defattr(644,root,root,755)
