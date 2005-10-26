@@ -9,7 +9,6 @@ Version:	2.7.8
 Release:	9.%{_rc}.%{_rel}
 License:	GPL
 Group:		Applications/Mail
-Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
 Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{_rc}-any.tar.gz
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
 Patch0:		%{name}-bugfixes.patch
@@ -43,7 +42,7 @@ za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
 %prep
-%setup -q -n %{name}-%{version}-%{sub_ver}-any
+%setup -q -n %{name}-%{version}-%{_rc}-any
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
