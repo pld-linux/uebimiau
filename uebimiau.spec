@@ -1,13 +1,16 @@
+# TODO
+# - use apache config triggers
 Summary:	UebiMiau - simple POP3 mail reader
 Summary(pl):	UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
-%define		sub_ver	RC1
-Release:	9.%{sub_ver}.3
+%define		_rc	RC1
+%define		_rel 4
+Release:	9.%{_rc}.%{_rel}
 License:	GPL
 Group:		Applications/Mail
 Vendor:		Aldoir Ventura <aldoir@users.sourceforge.net>
-Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{sub_ver}-any.tar.gz
+Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{_rc}-any.tar.gz
 # Source0-md5:	20e355ef9535deb49b8866cd93b661af
 Patch0:		%{name}-bugfixes.patch
 Patch1:		%{name}-folders.patch
@@ -18,12 +21,15 @@ URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
-Requires:	Smarty
+Requires:	Smarty >= 2.6.10-3
 Requires:	sed >= 4.1.1
 Requires:	webserver
 Provides:	webmail
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_appdir		%{_datadir}/%{name}
+%define		_smartydir	%{_datadir}/php/Smarty
 
 %description
 UebiMiau is a web-based e-mail client written in PHP. It has some
@@ -35,9 +41,6 @@ UebiMiau jest napisanym w PHP klientem poczty elektronicznej. Jego
 mo¿liwo¶ci to m.in. obs³uga folderów, przegl±dania i wysy³ania
 za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
-
-%define		_appdir		%{_datadir}/%{name}
-%define		_smartydir	%{php_pear_dir}/Smarty
 
 %prep
 %setup -q -n %{name}-%{version}-%{sub_ver}-any
@@ -160,5 +163,6 @@ fi
 %dir %{_appdir}/themes
 %{_appdir}/themes/debug.tpl
 %{_appdir}/themes/default
+
 %defattr(640,http,http,750)
 %dir %{_sharedstatedir}/%{name}
