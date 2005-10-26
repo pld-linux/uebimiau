@@ -1,0 +1,4 @@
+- typo in %description -l pl
+- 755 not needed for config.languages.php
+- release 2
+  STBR
