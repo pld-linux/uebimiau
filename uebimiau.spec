@@ -1,11 +1,9 @@
-# TODO
-# - use apache config triggers
 Summary:	UebiMiau - simple POP3 mail reader
 Summary(pl):	UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		_rc	RC1
-%define		_rel 4
+%define		_rel 4.3
 Release:	9.%{_rc}.%{_rel}
 License:	GPL
 Group:		Applications/Mail
@@ -18,6 +16,7 @@ Patch3:		%{name}-pl-fixes.patch
 Patch4:		%{name}-focus.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
+BuildRequires:	rpmbuild(macros) >= 1.226
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
 Requires:	Smarty >= 2.6.10-3
@@ -29,6 +28,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdir		%{_datadir}/%{name}
 %define		_smartydir	%{_datadir}/php/Smarty
+%define		_sysconfdir	/etc/%{name}
 
 %description
 UebiMiau is a web-based e-mail client written in PHP. It has some
@@ -48,20 +48,19 @@ wymaga bazy danych ani IMAP.
 %patch2 -p1
 %patch3 -p1
 
+# undos the source
+find . -name '*.php' -print0 | xargs -0 sed -i -e 's,\r$,,'
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{%{name},httpd},%{_sharedstatedir}/%{name}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sharedstatedir}/%{name}}
 install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,themes/default}
 
 %{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 for f in index.php badlogin.php error.php inc/inc.php; do
 	%{__sed} -i "s|define(\"SMARTY_DIR\",\"./smarty/\");|define(\"SMARTY_DIR\",\"%{_smartydir}/\");|" $f
 done
-mv -f inc/config.{php,languages.php,security.php}	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-ln -sf %{_sysconfdir}/%{name}/config.php		$RPM_BUILD_ROOT%{_appdir}/inc/config.php
-ln -sf %{_sysconfdir}/%{name}/config.languages.php	$RPM_BUILD_ROOT%{_appdir}/inc/config.languages.php
-ln -sf %{_sysconfdir}/%{name}/config.security.php	$RPM_BUILD_ROOT%{_appdir}/inc/config.security.php
 
 install *.php			$RPM_BUILD_ROOT%{_appdir}
 install database/index.php	$RPM_BUILD_ROOT%{_appdir}/database
@@ -71,7 +70,12 @@ install inc/*			$RPM_BUILD_ROOT%{_appdir}/inc
 install langs/*			$RPM_BUILD_ROOT%{_appdir}/langs
 install themes/debug.tpl	$RPM_BUILD_ROOT%{_appdir}/themes
 install themes/default/*	$RPM_BUILD_ROOT%{_appdir}/themes/default
-echo "Alias /%{name} %{_appdir}" >	$RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
+echo "Alias /%{name} %{_appdir}" > $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+
+mv $RPM_BUILD_ROOT%{_appdir}/inc/config{,.languages,.security}.php	$RPM_BUILD_ROOT%{_sysconfdir}
+ln -s %{_sysconfdir}/config.php		$RPM_BUILD_ROOT%{_appdir}/inc/config.php
+ln -s %{_sysconfdir}/config.languages.php	$RPM_BUILD_ROOT%{_appdir}/inc/config.languages.php
+ln -s %{_sysconfdir}/config.security.php	$RPM_BUILD_ROOT%{_appdir}/inc/config.security.php
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -100,6 +104,18 @@ if [ "$1" = "0" ]; then
 		fi
 	fi
 fi
+
+%triggerin -- apache1 >= 1.3.33-2
+%apache_config_install -v 1 -c %{_sysconfdir}/apache.conf
+
+%triggerun -- apache1 >= 1.3.33-2
+%apache_config_uninstall -v 1
+
+%triggerin -- apache >= 2.0.0
+%apache_config_install -v 2 -c %{_sysconfdir}/apache.conf
+
+%triggerun -- apache >= 2.0.0
+%apache_config_uninstall -v 2
 
 %triggerun -- %{name} < 2.7.8-5.RC1
 RADIR=/home/httpd/html/uebimiau/inc
@@ -146,12 +162,47 @@ if [ -d "$RADIR" -o -d "$ACDIR" ] ; then
 	fi
 fi
 
+%triggerpostun -- uebimiau < 2.7.8-8.RC1.4.1
+# migrate from old config location (only apache2, as there was no apache1 support)
+if [ -f /etc/httpd/%{name}.conf.rpmsave ]; then
+	cp -f %{_sysconfdir}/apache.conf{,.rpmnew}
+	mv -f /etc/httpd/%{name}.conf.rpmsave %{_sysconfdir}/apache.conf
+	if [ -f /var/lock/subsys/httpd ]; then
+		/etc/rc.d/init.d/httpd reload 1>&2
+	fi
+fi
+
+# nuke very-old config location (this mostly for Ra)
+if [ ! -d /etc/httpd/httpd.conf ]; then
+	sed -i -e "/^Include.*%{name}.conf/d" /etc/httpd/httpd.conf
+	if [ -f /var/lock/subsys/httpd ]; then
+		/etc/rc.d/init.d/httpd reload 1>&2
+	fi
+fi
+
+# place new config location, as trigger puts config only on first install, do it here.
+# apache1
+if [ -d /etc/apache/conf.d ]; then
+	ln -sf %{_sysconfdir}/apache.conf /etc/apache/conf.d/99_%{name}.conf
+	if [ -f /var/lock/subsys/apache ]; then
+		/etc/rc.d/init.d/apache reload 1>&2
+	fi
+fi
+# apache2
+if [ -d /etc/httpd/httpd.conf ]; then
+	ln -sf %{_sysconfdir}/apache.conf /etc/httpd/httpd.conf/99_%{name}.conf
+	if [ -f /var/lock/subsys/httpd ]; then
+		/etc/rc.d/init.d/httpd reload 1>&2
+	fi
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc CHANGELOG.txt INSTALL.txt README.txt
-%dir %{_sysconfdir}/%{name}
-%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*
-%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd/%{name}.conf
+%attr(750,root,http) %dir %{_sysconfdir}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.php
+
 %dir %{_appdir}
 %{_appdir}/*.php
 %{_appdir}/database
@@ -163,5 +214,4 @@ fi
 %{_appdir}/themes/debug.tpl
 %{_appdir}/themes/default
 
-%defattr(640,http,http,750)
-%dir %{_sharedstatedir}/%{name}
+%dir %attr(770,root,http) %{_sharedstatedir}/%{name}
