@@ -1,0 +1,4 @@
+- removed attachment,readmsg.patch (included in bugfixes.patch)
+- added bugfixes.patch (fix download,attachment,redir,moving bugs)
+- dropped out Source0-size
+- release 8; STBR
