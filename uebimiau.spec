@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		_rc	RC1
-%define		_rel 4.5
+%define		_rel 5
 Release:	9.%{_rc}.%{_rel}
 License:	GPL
 Group:		Applications/Mail
@@ -16,7 +16,7 @@ Patch3:		%{name}-pl-fixes.patch
 Patch4:		%{name}-focus.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
-BuildRequires:	rpmbuild(macros) >= 1.264
+BuildRequires:	rpmbuild(macros) >= 1.268
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
 Requires:	Smarty >= 2.6.10-3
@@ -191,14 +191,10 @@ if [ -L /etc/httpd/httpd.conf/99_%{name}.conf ]; then
 fi
 
 if [ "$httpd_reload" ]; then
-	if [ -f /var/lock/subsys/httpd ]; then
-		/etc/rc.d/init.d/httpd reload 1>&2
-	fi
+	%service httpd reload
 fi
 if [ "$apache_reload" ]; then
-	if [ -f /var/lock/subsys/apache ]; then
-		/etc/rc.d/init.d/apache reload 1>&2
-	fi
+	%service apache reload
 fi
 
 %files
