@@ -3,7 +3,7 @@ Summary(pl):	UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.8
 %define		_rc	RC1
-%define		_rel 5
+%define		_rel 6
 Release:	9.%{_rc}.%{_rel}
 License:	GPL
 Group:		Applications/Mail
