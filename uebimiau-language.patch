@@ -1,0 +1,21 @@
+diff -burN webmail.orig/inc/config.languages.php webmail/inc/config.languages.php
+--- webmail.orig/inc/config.languages.php	2006-07-16 21:57:53.000000000 +0200
++++ webmail/inc/config.languages.php	2006-07-16 22:36:11.000000000 +0200
+@@ -7,7 +7,7 @@
+ $default_theme						= 'default';
+ 
+ $allow_user_change_language			= yes; 
+-$default_language					= 'pt_BR';
++$default_language					= 'en_UK';
+ 
+ $themes['default'] = Array(
+ 	"name" 		=> "UebiMiau Default",
+@@ -101,7 +101,7 @@
+ 	"path" 		=> "nb"
+ );
+ 
+-$languages['bg'] = Array(
++$languages['pl'] = Array(
+ 	"name" 		=> "Polish",
+ 	"path" 		=> "pl"
+ );
