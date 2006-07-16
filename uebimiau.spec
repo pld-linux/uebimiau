@@ -1,19 +1,17 @@
 Summary:	UebiMiau - simple POP3 mail reader
 Summary(pl):	UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
-Version:	2.7.8
-%define		_rc	RC1
-%define		_rel 6
-Release:	9.%{_rc}.%{_rel}
+Version:	2.7.10
+Release:	0.1
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-%{_rc}-any.tar.gz
-# Source0-md5:	20e355ef9535deb49b8866cd93b661af
-Patch0:		%{name}-bugfixes.patch
-Patch1:		%{name}-folders.patch
-Patch2:		%{name}-smarty.patch
-Patch3:		%{name}-pl-fixes.patch
-Patch4:		%{name}-focus.patch
+Source0:	http://www.uebimiau.org/downloads/%{name}-%{version}-any.zip
+# Source0-md5:	859cae1133aa088823d78acbbeb3baa2
+Patch0:		%{name}-folders.patch
+Patch1:		%{name}-smarty.patch
+Patch2:		%{name}-pl-fixes.patch
+Patch3:		%{name}-header.patch
+Patch4:		%{name}-language.patch
 URL:		http://www.uebimiau.org/
 BuildRequires:	sed >= 4.1.1
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -45,18 +43,26 @@ za³±czników, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
 %prep
-%setup -q -n %{name}-%{version}-%{_rc}-any
+%setup -q -n webmail
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 # undos the source
 find . -name '*.php' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
-echo 'Alias /%{name} %{_appdir}' > apache.conf
+# prepare apache config file
+cat > apache.conf << EOF_APACHE_CONF
+Alias /%{name} %{_appdir}
+<Directory %{_appdir}>
+	Order Allow,Deny
+	Allow From All
+</Directory>
+EOF_APACHE_CONF
 
-%{__sed} -i "s|\$temporary_directory = \"./database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
+%{__sed} -i "s|\$temporary_directory = \"database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 for f in index.php badlogin.php error.php inc/inc.php; do
 	%{__sed} -i "s|define(\"SMARTY_DIR\",\"./smarty/\");|define(\"SMARTY_DIR\",\"%{_smartydir}/\");|" $f
 done
@@ -64,7 +70,7 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sharedstatedir}/%{name}}
-install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,themes/default}
+install -d $RPM_BUILD_ROOT%{_appdir}/{database,extra,images,inc,langs,themes/uebimiau}
 
 install *.php			$RPM_BUILD_ROOT%{_appdir}
 install database/index.php	$RPM_BUILD_ROOT%{_appdir}/database
@@ -73,9 +79,9 @@ install images/*		$RPM_BUILD_ROOT%{_appdir}/images
 install inc/*			$RPM_BUILD_ROOT%{_appdir}/inc
 install langs/*			$RPM_BUILD_ROOT%{_appdir}/langs
 install themes/debug.tpl	$RPM_BUILD_ROOT%{_appdir}/themes
-install themes/default/*	$RPM_BUILD_ROOT%{_appdir}/themes/default
-install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
-install apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+cp -ar  themes/uebimiau/*	$RPM_BUILD_ROOT%{_appdir}/themes/uebimiau
+install apache.conf 		$RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+install apache.conf 		$RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 
 mv $RPM_BUILD_ROOT%{_appdir}/inc/config{,.languages,.security}.php	$RPM_BUILD_ROOT%{_sysconfdir}
 ln -s %{_sysconfdir}/config.php		$RPM_BUILD_ROOT%{_appdir}/inc/config.php
@@ -199,7 +205,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG.txt INSTALL.txt README.txt
+%doc docs/*
 %attr(750,root,http) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
@@ -214,6 +220,6 @@ fi
 %{_appdir}/langs
 %dir %{_appdir}/themes
 %{_appdir}/themes/debug.tpl
-%{_appdir}/themes/default
+%{_appdir}/themes/uebimiau
 
 %dir %attr(770,root,http) %{_sharedstatedir}/%{name}
