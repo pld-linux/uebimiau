@@ -1,16 +1,15 @@
 diff -burN webmail.orig/inc/inc.php webmail/inc/inc.php
 --- webmail.orig/inc/inc.php	2006-07-16 21:57:53.000000000 +0200
 +++ webmail/inc/inc.php	2006-07-16 22:25:05.000000000 +0200
-@@ -151,9 +151,9 @@
+@@ -151,9 +151,8 @@
  Don't remove the fallowing lines, or you will be problems with browser's cache 
  */
  
 -Header("Expires: Wed, 11 Nov 1998 11:11:11 GMT\r\n".
 -"Cache-Control: no-cache\r\n".
 -"Cache-Control: must-revalidate");
-+header("Expires: Wed, 11 Nov 1998 11:11:11 GMT\r\n");
-+header("Cache-Control: no-cache\r\n");
-+header("Cache-Control: must-revalidate");
++header("Expires: Wed, 11 Nov 1998 11:11:11 GMT");
++header("Cache-Control: no-cache, must-revalidate");
  
  $nocache = "
  <META HTTP-EQUIV=\"Cache-Control\" CONTENT=\"no-cache\">
