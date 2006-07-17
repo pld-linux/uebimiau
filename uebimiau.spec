@@ -25,7 +25,7 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdir		%{_datadir}/%{name}
-%define		_smartydir	%{_datadir}/php/Smarty
+%define		_smartydir	/usr/share/php/Smarty
 %define		_sysconfdir	/etc/%{name}
 %define		_webapps	/etc/webapps
 %define		_webapp		%{name}
@@ -44,14 +44,15 @@ wymaga bazy danych ani IMAP.
 
 %prep
 %setup -q -n webmail
+
+# undos the source
+find . -name '*.php' -print0 | xargs -0 sed -i -e 's,\r$,,'
+
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-
-# undos the source
-find . -name '*.php' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
 # prepare apache config file
 cat > apache.conf << EOF_APACHE_CONF
