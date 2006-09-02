@@ -13,8 +13,8 @@ Patch2:		%{name}-pl-fixes.patch
 Patch3:		%{name}-header.patch
 Patch4:		%{name}-language.patch
 URL:		http://www.uebimiau.org/
-BuildRequires:	sed >= 4.1.1
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
 Requires:	Smarty >= 2.6.10-3
@@ -80,7 +80,7 @@ install images/*		$RPM_BUILD_ROOT%{_appdir}/images
 install inc/*			$RPM_BUILD_ROOT%{_appdir}/inc
 install langs/*			$RPM_BUILD_ROOT%{_appdir}/langs
 install themes/debug.tpl	$RPM_BUILD_ROOT%{_appdir}/themes
-cp -ar  themes/uebimiau/*	$RPM_BUILD_ROOT%{_appdir}/themes/uebimiau
+cp -a  themes/uebimiau/*	$RPM_BUILD_ROOT%{_appdir}/themes/uebimiau
 install apache.conf 		$RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 install apache.conf 		$RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 
