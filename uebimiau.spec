@@ -1,5 +1,5 @@
 Summary:	UebiMiau - simple POP3 mail reader
-Summary(pl):	UebiMiau - prosty czytnik poczty POP3
+Summary(pl.UTF-8):   UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
 Version:	2.7.10
 Release:	1
@@ -36,10 +36,10 @@ UebiMiau is a web-based e-mail client written in PHP. It has some
 features, such as: Folders, View and Send Attachments, Preferences,
 Search, Quota Limit, etc. UebiMiau does not require database or IMAP.
 
-%description -l pl
+%description -l pl.UTF-8
 UebiMiau jest napisanym w PHP klientem poczty elektronicznej. Jego
-moøliwo∂ci to m.in. obs≥uga folderÛw, przegl±dania i wysy≥ania
-za≥±cznikÛw, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
+mo≈ºliwo≈õci to m.in. obs≈Çuga folder√≥w, przeglƒÖdania i wysy≈Çania
+za≈ÇƒÖcznik√≥w, preferencji, wyszukiwania, quoty i inne. UebiMiau nie
 wymaga bazy danych ani IMAP.
 
 %prep
