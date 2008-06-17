@@ -1,3 +1,5 @@
+# TODO
+# - proper webapps integration: make config not accessible from web
 Summary:	UebiMiau - simple POP3 mail reader
 Summary(pl.UTF-8):	UebiMiau - prosty czytnik poczty POP3
 Name:		uebimiau
@@ -13,7 +15,7 @@ Patch2:		%{name}-pl-fixes.patch
 Patch3:		%{name}-header.patch
 Patch4:		%{name}-language.patch
 URL:		http://www.uebimiau.org/
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.461
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
@@ -25,7 +27,7 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdir		%{_datadir}/%{name}
-%define		_smartydir	/usr/share/php/Smarty
+%define		_smartydir	%{php_data_dir}/Smarty
 %define		_sysconfdir	/etc/%{name}
 %define		_webapps	/etc/webapps
 %define		_webapp		%{name}
@@ -55,13 +57,13 @@ find . -name '*.php' -print0 | xargs -0 sed -i -e 's,\r$,,'
 %patch4 -p1
 
 # prepare apache config file
-cat > apache.conf << EOF_APACHE_CONF
+cat > apache.conf <<'EOF'
 Alias /%{name} %{_appdir}
 <Directory %{_appdir}>
 	Order Allow,Deny
 	Allow From All
 </Directory>
-EOF_APACHE_CONF
+EOF
 
 %{__sed} -i "s|\$temporary_directory = \"database/\";|\$temporary_directory = \"%{_sharedstatedir}/%{name}/\";|" inc/config.php
 for f in index.php badlogin.php error.php inc/inc.php; do
