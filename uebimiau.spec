@@ -19,6 +19,7 @@ BuildRequires:	rpmbuild(macros) >= 1.461
 BuildRequires:	sed >= 4.1.1
 # BR: rpm - not for Ra where is wrong def. of %%{_sharedstatedir}.
 BuildRequires:	rpm >= 4.3
+BuildRequires:	unzip
 Requires:	Smarty >= 2.6.10-3
 Requires:	sed >= 4.1.1
 Requires:	webapps
